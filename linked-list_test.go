@@ -10,7 +10,7 @@ import (
 
 func TestLinkedList(t *testing.T) {
 
-	list := algorithms.LinkedList{}
+	list := algorithms.LinkedList[int]{}
 
 	list.Append(5)
 	list.Append(7)
@@ -44,7 +44,7 @@ func TestLinkedList(t *testing.T) {
 	assert.Equal(t, 9, *v)
 	fmt.Println(list)
 
-	list.RemoveAt(0)
+	list.Remove(9)
 	assert.Equal(t, 2, list.Length)
 	v, _ = list.Get(0)
 	assert.Equal(t, 7, *v)

@@ -4,20 +4,20 @@ import (
 	"fmt"
 )
 
-type ListNode struct {
-	Prev  *ListNode
-	Next  *ListNode
-	Value int
+type ListNode[T comparable] struct {
+	Prev  *ListNode[T]
+	Next  *ListNode[T]
+	Value T
 }
 
-type LinkedList struct {
-	Head   *ListNode
-	Tail   *ListNode
+type LinkedList[T comparable] struct {
+	Head   *ListNode[T]
+	Tail   *ListNode[T]
 	Length int
 }
 
-func (list *LinkedList) Prepend(value int) {
-	node := &ListNode{Value: value}
+func (list *LinkedList[T]) Prepend(value T) {
+	node := &ListNode[T]{Value: value}
 	if list.Length == 0 {
 		list.Head, list.Tail = node, node
 	} else {
@@ -29,7 +29,20 @@ func (list *LinkedList) Prepend(value int) {
 	list.Length++
 }
 
-func (list *LinkedList) InsertAt(idx int, v int) error {
+func (list *LinkedList[T]) Append(value T) {
+	node := &ListNode[T]{Value: value}
+	if list.Length == 0 {
+		list.Head, list.Tail = node, node
+	} else {
+		prev := list.Tail
+		prev.Next = node
+		node.Prev = prev
+		list.Tail = node
+	}
+	list.Length += 1
+}
+
+func (list *LinkedList[T]) InsertAt(idx int, v T) error {
 	if idx > list.Length {
 		return fmt.Errorf("can't InsertAt, idx %v is unavailable", idx)
 	} else if idx == list.Length {
@@ -39,7 +52,7 @@ func (list *LinkedList) InsertAt(idx int, v int) error {
 		list.Prepend(v)
 		return nil
 	}
-	node := ListNode{Value: v}
+	node := ListNode[T]{Value: v}
 	curr := list.Head
 	for i := 0; i < idx; i++ {
 		curr = curr.Next
@@ -53,20 +66,7 @@ func (list *LinkedList) InsertAt(idx int, v int) error {
 	return nil
 }
 
-func (list *LinkedList) Append(value int) {
-	node := &ListNode{Value: value}
-	if list.Length == 0 {
-		list.Head, list.Tail = node, node
-	} else {
-		prev := list.Tail
-		prev.Next = node
-		node.Prev = prev
-		list.Tail = node
-	}
-	list.Length += 1
-}
-
-func (list *LinkedList) Get(idx int) (*int, error) {
+func (list *LinkedList[T]) Get(idx int) (*T, error) {
 	if idx > list.Length-1 {
 		return nil, fmt.Errorf("can't Get, idx %v is unavailable", idx)
 	}
@@ -77,7 +77,30 @@ func (list *LinkedList) Get(idx int) (*int, error) {
 	return &current.Value, nil
 }
 
-func (list *LinkedList) remove(node *ListNode) *int {
+func (list *LinkedList[T]) Remove(value T) {
+	curr := list.Head
+	for i := 0; i < list.Length; i++ {
+		if curr.Value == value {
+			list.removeNode(curr)
+			return
+		} else {
+			curr = curr.Next
+		}
+	}
+}
+
+func (list *LinkedList[T]) RemoveAt(idx int) (*T, error) {
+	if idx > list.Length-1 {
+		return nil, fmt.Errorf("can't RemoveAt, idx %v is unavailable", idx)
+	}
+	curr := list.Head
+	for i := 0; i < idx; i++ {
+		curr = curr.Next
+	}
+	return list.removeNode(curr), nil
+}
+
+func (list *LinkedList[T]) removeNode(node *ListNode[T]) *T {
 	prev, next := node.Prev, node.Next
 	if list.Length == 1 { // 1 node list
 		list.Head, list.Tail = nil, nil
@@ -93,18 +116,7 @@ func (list *LinkedList) remove(node *ListNode) *int {
 	return &node.Value
 }
 
-func (list *LinkedList) RemoveAt(idx int) (*int, error) {
-	if idx > list.Length-1 {
-		return nil, fmt.Errorf("can't RemoveAt, idx %v is unavailable", idx)
-	}
-	curr := list.Head
-	for i := 0; i < idx; i++ {
-		curr = curr.Next
-	}
-	return list.remove(curr), nil
-}
-
-func (list LinkedList) String() string {
+func (list LinkedList[T]) String() string {
 	if list.Head == nil {
 		return "(Empty LinkedList)"
 	}
