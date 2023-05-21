@@ -6,32 +6,50 @@ type BinaryNode[T comparable] struct {
 	Left  *BinaryNode[T]
 }
 
-func (curr *BinaryNode[T]) PreOrder(path *[]T) *[]T {
+func (curr *BinaryNode[T]) PreOrderTraverse(path *[]T) *[]T {
 	if curr == nil {
 		return path
 	}
 	*path = append(*path, curr.Value)
-	curr.Left.PreOrder(path)
-	curr.Right.PreOrder(path)
+	curr.Left.PreOrderTraverse(path)
+	curr.Right.PreOrderTraverse(path)
 	return path
 }
 
-func (curr *BinaryNode[T]) InOrder(path *[]T) *[]T {
+func (curr *BinaryNode[T]) InOrderTraverse(path *[]T) *[]T {
 	if curr == nil {
 		return path
 	}
-	curr.Left.InOrder(path)
+	curr.Left.InOrderTraverse(path)
 	*path = append(*path, curr.Value)
-	curr.Right.InOrder(path)
+	curr.Right.InOrderTraverse(path)
 	return path
 }
 
-func (curr *BinaryNode[T]) PostOrder(path *[]T) *[]T {
+func (curr *BinaryNode[T]) PostOrderTraverse(path *[]T) *[]T {
 	if curr == nil {
 		return path
 	}
-	curr.Left.PostOrder(path)
-	curr.Right.PostOrder(path)
+	curr.Left.PostOrderTraverse(path)
+	curr.Right.PostOrderTraverse(path)
 	*path = append(*path, curr.Value)
 	return path
+}
+
+func (head *BinaryNode[T]) BreadthFirstSearch(needle T) bool {
+	queue := Queue[BinaryNode[T]]{}
+	queue.Enqueue(*head)
+	for queue.Length > 0 {
+		curr, _ := queue.Deque()
+		if curr.Value == needle {
+			return true
+		}
+		if curr.Left != nil {
+			queue.Enqueue(*curr.Left)
+		}
+		if curr.Right != nil {
+			queue.Enqueue(*curr.Right)
+		}
+	}
+	return false
 }

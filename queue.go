@@ -2,12 +2,12 @@ package algorithms
 
 import "fmt"
 
-type QueueNode[T int64 | float64 | string] struct {
+type QueueNode[T comparable] struct {
 	value T
 	next  *QueueNode[T]
 }
 
-type Queue[T int64 | float64 | string] struct {
+type Queue[T comparable] struct {
 	Length int
 	head   *QueueNode[T]
 	tail   *QueueNode[T]
