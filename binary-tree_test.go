@@ -10,18 +10,22 @@ import (
 var tree = algorithms.BinaryNode[int]{
 	20,
 	&algorithms.BinaryNode[int]{
-		50,
-		&algorithms.BinaryNode[int]{100, nil, nil},
-		&algorithms.BinaryNode[int]{30,
-			&algorithms.BinaryNode[int]{45, nil, nil},
-			&algorithms.BinaryNode[int]{29, nil, nil}},
+		10,
+		&algorithms.BinaryNode[int]{
+			5,
+			nil,
+			&algorithms.BinaryNode[int]{7, nil, nil},
+		},
+		&algorithms.BinaryNode[int]{15, nil, nil},
 	},
 	&algorithms.BinaryNode[int]{
-		10,
-		&algorithms.BinaryNode[int]{15, nil, nil},
-		&algorithms.BinaryNode[int]{5,
-			&algorithms.BinaryNode[int]{7, nil, nil},
-			nil},
+		50,
+		&algorithms.BinaryNode[int]{
+			30,
+			&algorithms.BinaryNode[int]{29, nil, nil},
+			&algorithms.BinaryNode[int]{45, nil, nil},
+		},
+		&algorithms.BinaryNode[int]{100, nil, nil},
 	},
 }
 

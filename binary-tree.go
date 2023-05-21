@@ -1,44 +1,46 @@
 package algorithms
 
+import "fmt"
+
 type BinaryNode[T comparable] struct {
 	Value T
-	Right *BinaryNode[T]
 	Left  *BinaryNode[T]
+	Right *BinaryNode[T]
 }
 
-func (curr *BinaryNode[T]) PreOrderTraverse(path *[]T) *[]T {
-	if curr == nil {
+func (node *BinaryNode[T]) PreOrderTraverse(path *[]T) *[]T {
+	if node == nil {
 		return path
 	}
-	*path = append(*path, curr.Value)
-	curr.Left.PreOrderTraverse(path)
-	curr.Right.PreOrderTraverse(path)
+	*path = append(*path, node.Value)
+	node.Left.PreOrderTraverse(path)
+	node.Right.PreOrderTraverse(path)
 	return path
 }
 
-func (curr *BinaryNode[T]) InOrderTraverse(path *[]T) *[]T {
-	if curr == nil {
+func (node *BinaryNode[T]) InOrderTraverse(path *[]T) *[]T {
+	if node == nil {
 		return path
 	}
-	curr.Left.InOrderTraverse(path)
-	*path = append(*path, curr.Value)
-	curr.Right.InOrderTraverse(path)
+	node.Left.InOrderTraverse(path)
+	*path = append(*path, node.Value)
+	node.Right.InOrderTraverse(path)
 	return path
 }
 
-func (curr *BinaryNode[T]) PostOrderTraverse(path *[]T) *[]T {
-	if curr == nil {
+func (node *BinaryNode[T]) PostOrderTraverse(path *[]T) *[]T {
+	if node == nil {
 		return path
 	}
-	curr.Left.PostOrderTraverse(path)
-	curr.Right.PostOrderTraverse(path)
-	*path = append(*path, curr.Value)
+	node.Left.PostOrderTraverse(path)
+	node.Right.PostOrderTraverse(path)
+	*path = append(*path, node.Value)
 	return path
 }
 
-func (head *BinaryNode[T]) BreadthFirstSearch(needle T) bool {
+func (node *BinaryNode[T]) BreadthFirstSearch(needle T) bool {
 	queue := Queue[BinaryNode[T]]{}
-	queue.Enqueue(*head)
+	queue.Enqueue(*node)
 	for queue.Length > 0 {
 		curr, _ := queue.Deque()
 		if curr.Value == needle {
@@ -54,20 +56,18 @@ func (head *BinaryNode[T]) BreadthFirstSearch(needle T) bool {
 	return false
 }
 
-func (head *BinaryNode[T]) DepthFirstSearch(needle T) bool {
-	stack := Stack[BinaryNode[T]]{}
-	stack.Push(*head)
-	for stack.Length > 0 {
-		curr, _ := stack.Pop()
-		if curr.Value == needle {
-			return true
-		}
-		if curr.Left != nil {
-			stack.Push(*curr.Left)
-		}
-		if curr.Right != nil {
-			stack.Push(*curr.Right)
-		}
+func (node *BinaryNode[T]) DepthFirstSearch(needle T) bool {
+	fmt.Println(node.Value)
+
+	result := false
+	if node.Value == needle {
+		result = true
 	}
-	return false
+	if node.Left != nil && !result {
+		result = node.Left.DepthFirstSearch(needle)
+	}
+	if node.Right != nil && !result {
+		result = result || node.Right.DepthFirstSearch(needle)
+	}
+	return result
 }
