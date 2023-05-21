@@ -2,12 +2,12 @@ package algorithms
 
 import "fmt"
 
-type StackNode[T int | string | float64] struct {
+type StackNode[T comparable] struct {
 	value T
 	next  *StackNode[T]
 }
 
-type Stack[T int | string | float64] struct {
+type Stack[T comparable] struct {
 	head   *StackNode[T]
 	Length int
 }

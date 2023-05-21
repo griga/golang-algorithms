@@ -53,3 +53,21 @@ func (head *BinaryNode[T]) BreadthFirstSearch(needle T) bool {
 	}
 	return false
 }
+
+func (head *BinaryNode[T]) DepthFirstSearch(needle T) bool {
+	stack := Stack[BinaryNode[T]]{}
+	stack.Push(*head)
+	for stack.Length > 0 {
+		curr, _ := stack.Pop()
+		if curr.Value == needle {
+			return true
+		}
+		if curr.Left != nil {
+			stack.Push(*curr.Left)
+		}
+		if curr.Right != nil {
+			stack.Push(*curr.Right)
+		}
+	}
+	return false
+}

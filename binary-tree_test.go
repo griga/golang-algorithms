@@ -43,11 +43,20 @@ func TestPostOrder(t *testing.T) {
 	assert.EqualValues(t, expect, result)
 }
 
-func TestBreadFirstSearch(t *testing.T) {
+func TestBreadthFirstSearch(t *testing.T) {
 	result := tree.BreadthFirstSearch(45)
 	assert.EqualValues(t, true, result)
 	result = tree.BreadthFirstSearch(7)
 	assert.EqualValues(t, true, result)
 	result = tree.BreadthFirstSearch(69)
+	assert.EqualValues(t, false, result)
+}
+
+func TestDepthFirstSearch(t *testing.T) {
+	result := tree.DepthFirstSearch(45)
+	assert.EqualValues(t, true, result)
+	result = tree.DepthFirstSearch(7)
+	assert.EqualValues(t, true, result)
+	result = tree.DepthFirstSearch(69)
 	assert.EqualValues(t, false, result)
 }
