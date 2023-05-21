@@ -1,7 +1,5 @@
 package algorithms
 
-import "fmt"
-
 type BinaryNode[T comparable] struct {
 	Value T
 	Left  *BinaryNode[T]
@@ -57,8 +55,6 @@ func (node *BinaryNode[T]) BreadthFirstSearch(needle T) bool {
 }
 
 func (node *BinaryNode[T]) DepthFirstSearch(needle T) bool {
-	fmt.Println(node.Value)
-
 	result := false
 	if node.Value == needle {
 		result = true
@@ -70,4 +66,17 @@ func (node *BinaryNode[T]) DepthFirstSearch(needle T) bool {
 		result = result || node.Right.DepthFirstSearch(needle)
 	}
 	return result
+}
+
+func (node *BinaryNode[T]) Compare(other *BinaryNode[T]) bool {
+	if node == nil && other == nil {
+		return true
+	}
+	if node == nil || other == nil {
+		return false
+	}
+	if node.Value != other.Value {
+		return false
+	}
+	return node.Left.Compare(other.Left) && node.Right.Compare(other.Right)
 }

@@ -29,6 +29,50 @@ var tree = algorithms.BinaryNode[int]{
 	},
 }
 
+var tree2 = algorithms.BinaryNode[int]{
+	20,
+	&algorithms.BinaryNode[int]{
+		10,
+		&algorithms.BinaryNode[int]{
+			5,
+			nil,
+			&algorithms.BinaryNode[int]{7, nil, nil},
+		},
+		&algorithms.BinaryNode[int]{15, nil, nil},
+	},
+	&algorithms.BinaryNode[int]{
+		50,
+		&algorithms.BinaryNode[int]{
+			30,
+			&algorithms.BinaryNode[int]{29, nil, nil},
+			&algorithms.BinaryNode[int]{45, nil, nil},
+		},
+		&algorithms.BinaryNode[int]{100, nil, nil},
+	},
+}
+
+var tree3 = algorithms.BinaryNode[int]{
+	20,
+	&algorithms.BinaryNode[int]{
+		10,
+		&algorithms.BinaryNode[int]{
+			5,
+			nil,
+			&algorithms.BinaryNode[int]{7, nil, nil},
+		},
+		&algorithms.BinaryNode[int]{15, nil, nil},
+	},
+	&algorithms.BinaryNode[int]{
+		50,
+		&algorithms.BinaryNode[int]{
+			30,
+			&algorithms.BinaryNode[int]{29, nil, nil},
+			&algorithms.BinaryNode[int]{45, nil, nil},
+		},
+		nil,
+	},
+}
+
 func TestPreOrder(t *testing.T) {
 	result := *tree.PreOrderTraverse(&[]int{})
 	expect := []int{20, 10, 5, 7, 15, 50, 30, 29, 45, 100}
@@ -63,4 +107,13 @@ func TestDepthFirstSearch(t *testing.T) {
 	assert.EqualValues(t, true, result)
 	result = tree.DepthFirstSearch(69)
 	assert.EqualValues(t, false, result)
+}
+
+func TestCompare(t *testing.T) {
+	result := tree.Compare(&tree)
+	assert.Equal(t, true, result)
+	result = tree.Compare(&tree2)
+	assert.Equal(t, true, result)
+	result = tree.Compare(&tree3)
+	assert.Equal(t, false, result)
 }
